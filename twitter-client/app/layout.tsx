@@ -1,21 +1,58 @@
-import type { Metadata } from "next";
+'use client'
 import "../styles/globals.css";
+import { useEffect, useState } from 'react';
+import SmallSideBar from "@/components/SmallSideBar";
+import MediumSideBar from "@/components/MediumSideBar";
+import LargeSideBar from "@/components/LargeSideBar";
 
 
-export const metadata: Metadata = {
-  title: "X Clone - A Next.js Twitter-Like Social Media Platform",
-  description: "X Clone is a modern social media web app built with Next.js, offering real-time feed updates, user interactions, and a responsive design inspired by Twitter. Users can post, comment, like, retweet, and engage with a familiar interface optimized for performance and scalability.",
-};
+export default function RootLayout({ feed, suggestions }: { feed: React.ReactNode, suggestions: React.ReactNode }) {
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  const [viewPort, setViewPort] = useState("large");
+
+  const handleResize = () => {
+    let viewPortValue = window.innerWidth;
+    if (viewPortValue < 660) {
+      setViewPort("mini");
+    }
+    else if (viewPortValue < 1000) {
+      setViewPort("small");
+    }
+    else if (viewPortValue < 1280) {
+      setViewPort("medium");
+    }
+    else {
+      setViewPort("large");
+    }
+  };
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
     <html lang="en">
       <body>
-        <main>{children}</main>
+        <main>
+          {viewPort === "mini" && <div>
+            <div>{feed}</div>
+            <SmallSideBar />
+          </div>}
+          {viewPort === "small" && <div className="grid grid-cols-[1fr_7fr] min-h-screen">
+            <div><MediumSideBar /></div>
+            <div>lorem5000</div></div>}
+          {viewPort==="medium"  && <div className="grid grid-cols-[1fr_5fr_4fr] min-h-screen">
+              <div><MediumSideBar/></div>
+              <div>lorem5000</div>
+              <div>lawda</div>
+            </div>}
+            {viewPort==="large"  && <div className="grid grid-cols-[3fr_4fr_3fr] min-h-screen">
+              <div className="justify-self-center"><LargeSideBar/></div>
+              <div>lorem5000</div>
+              <div>lawda</div>
+              </div>}
+        </main>
       </body>
     </html>
   );

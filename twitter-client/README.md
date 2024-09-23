@@ -1,0 +1,2 @@
+X Clone
+A full-stack social media platform inspired by Twitter, built with cutting-edge technologies like Node.js, GraphQL, Next.js, Prisma ORM, PostgreSQL, Supabase, Tailwind CSS, ShadCN, and TypeScript.

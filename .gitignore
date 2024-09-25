@@ -48,3 +48,4 @@ twitter-client/next-env.d.ts
 
 twitter-server/node_modules/
 /twitter-server/node_modules/
+/twitter-server/build/

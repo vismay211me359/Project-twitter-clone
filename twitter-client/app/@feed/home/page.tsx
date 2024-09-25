@@ -2,7 +2,6 @@
 const page = () => {
   return (
     <div>
-      lawda
     </div>
   )
 }

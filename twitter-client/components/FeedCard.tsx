@@ -28,7 +28,7 @@ const FeedCard: React.FC<TweetCardProps> = ({
   trendingCount
 }) => {
   return (
-    <div className="w-full bg-app-background text-app-text-primary border-x-2 border-app-border border-b-2 pb-2">
+    <div className="w-full bg-app-background text-app-text-primary border-app-border border-b-2 pb-2">
       <div className="grid grid-cols-[1fr_11fr]">
         <div className='m-2'>
           <Image

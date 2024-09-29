@@ -1,6 +1,8 @@
 import { FaXTwitter } from "react-icons/fa6";
 import { FaHome, FaBell, FaEnvelope, FaBookmark, FaUser, FaSearch } from 'react-icons/fa';
 import Image from 'next/image';
+import { useCurrentUser } from "@/hooks/user";
+import { useState } from 'react';
 interface MenuItem {
   name: string;
   icon: JSX.Element;
@@ -18,6 +20,14 @@ const menuItems: MenuItem[] = [
 
 
 const LargeSideBar: React.FC = () => {
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+  const toggleDropdown = () => {
+    setDropdownVisible(!isDropdownVisible);
+  };
+  const handleLogout = () => {
+
+  }
+  const { user } = useCurrentUser();
   return (
     <div className="pr-20 ">
       <div className="bg-app-background flex flex-col justify-between items-center h-full fixed">
@@ -39,15 +49,36 @@ const LargeSideBar: React.FC = () => {
         </div>
         <div className="flex items-center justify-center p-4 bg-app-background hover:bg-app-border rounded-full cursor-pointer transition-all duration-300">
           <Image
-            src="/images/profile_photo.webp"
+            src={(user && user.profileImageURL) ? user.profileImageURL : "/images/profile_photo.webp"}
             alt="Profile"
-            width={40}
-            height={40}
-            className="rounded-full"
+            width={32}
+            height={32}
+            className="w-full h-full rounded-full"
           />
-          <div className="text-app-text-primary ml-4">
-            <p className="font-bold">John Doe</p>
-            <p className="text-app-text-secondary">@johndoe</p>
+          <div className="relative">
+            {/* The clickable button displaying the user's name */}
+            <div
+              className="text-app-text-primary ml-4 cursor-pointer"
+              onClick={toggleDropdown}
+            >
+              <p className="font-bold">{user?.firstName || "John Doe"}</p>
+              <p className="text-app-text-secondary">@{user?.firstName || "JohnDoe"}</p>
+            </div>
+
+            {/* The dropdown will appear above the button when clicked */}
+            {isDropdownVisible && (
+              <div
+                className="absolute -top-16 right-0 w-48 bg-app-card-bg text-app-text-primary rounded-lg shadow-lg p-4 z-50"
+                onClick={() => setDropdownVisible(false)}
+              >
+                <button
+                  className="w-full text-left hover:bg-app-btn-hover hover:text-white py-2 px-3 rounded-lg transition-colors duration-300"
+                  onClick={handleLogout}
+                >
+                  Wanna Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

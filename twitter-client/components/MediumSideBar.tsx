@@ -8,13 +8,13 @@ const MediumSideBar = () => {
     <div>
       <div className="flex flex-col justify-between items-center h-full fixed">
         <div className="flex flex-col space-y-8 p-4 ">
-          <FaXTwitter className="text-3xl hover:text-app-icon-hover transition-colors" size={40}/>
-          <FaHome className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
-          <FaSearch className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
-          <FaRegPlusSquare className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
-          <FaBell className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
-          <FaEnvelope className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
-          <FaUserPlus className="text-2xl hover:text-app-icon-hover transition-colors" size={35}/>
+          <FaXTwitter className="text-3xl hover:text-app-icon-hover transition-colors duration-300" size={40}/>
+          <FaHome className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
+          <FaSearch className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
+          <FaRegPlusSquare className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
+          <FaBell className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
+          <FaEnvelope className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
+          <FaUserPlus className="text-2xl hover:text-app-icon-hover transition-colors duration-300" size={35}/>
         </div>
 
         <div className="flex items-center justify-center p-4">

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import SmallSideBar from "@/components/SmallSideBar";
 import MediumSideBar from "@/components/MediumSideBar";
 import LargeSideBar from "@/components/LargeSideBar";
-import FeedList from "@/components/FeedList";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import SmallTopBar from "@/components/SmallTopBar";
 import LoginModal from "@/components/LoginModal";
@@ -54,20 +53,19 @@ export default function RootLayout({ feed, suggestions }: { feed: React.ReactNod
             {viewPort === "mini" && <div>
               <SmallTopBar/>
               <div>{feed}</div>
-              <FeedList />
               <SmallSideBar />
             </div>}
             {viewPort === "small" && <div className="grid grid-cols-[1fr_7fr] min-h-screen">
               <div><MediumSideBar /></div>
-              <div className="relative"><div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-4 bg-app-background text-app-text-primary p-4 rounded-lg shadow-lg"><LoginSection/></div><FeedList /></div></div>}
+              <div className="relative"><div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-4 bg-app-background text-app-text-primary p-4 rounded-lg shadow-lg"><LoginSection/></div>{feed}</div></div>}
             {viewPort === "medium" && <div className="grid grid-cols-[1fr_5fr_4fr] min-h-screen">
               <div><MediumSideBar /></div>
-              <div><FeedList /></div>
+              <div>{feed}</div>
               <div className="relative"><div className="fixed"><LoginSection/></div></div>
             </div>}
             {viewPort === "large" && <div className="grid grid-cols-[3fr_4fr_3fr] min-h-screen">
               <div className="justify-self-center"><LargeSideBar /></div>
-              <div><FeedList /></div>
+              <div>{feed}</div>
               <div className="relative"><div className="fixed"><LoginSection/></div></div>
             </div>}
           </main>

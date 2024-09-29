@@ -13,6 +13,7 @@ interface TweetCardProps {
   commentCount: number;
   retweetCount: number;
   trendingCount: number;
+  profileImageURL?:string;
 }
 
 const FeedCard: React.FC<TweetCardProps> = ({
@@ -25,14 +26,15 @@ const FeedCard: React.FC<TweetCardProps> = ({
   likesCount,
   commentCount,
   retweetCount,
-  trendingCount
+  trendingCount,
+  profileImageURL
 }) => {
   return (
     <div className="w-full bg-app-background text-app-text-primary border-app-border border-b-2 pb-2">
       <div className="grid grid-cols-[1fr_11fr]">
         <div className='m-2'>
           <Image
-            src="/images/profile_photo.webp"
+            src={profileImageURL || "/images/profile_photo.webp"}
             alt={authorName}
             width={30}
             height={30}

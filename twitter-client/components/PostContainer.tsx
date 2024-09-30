@@ -38,6 +38,7 @@ const PostContainer = () => {
         mutate({
             content:theContent,
         })
+        setContent("");
         if (textareaRef.current) {
             textareaRef.current.value = '';
             textareaRef.current.style.height = 'auto';

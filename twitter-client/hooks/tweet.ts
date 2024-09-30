@@ -12,6 +12,7 @@ export const useCreateTweet=()=>{
         onMutate:()=>toast.loading("Creating tweet",{id:'1'}),
         onSuccess:async()=>{
             await queryClient.invalidateQueries({ queryKey: ['all-tweets'] })
+            await queryClient.invalidateQueries({ queryKey: ['current-user'] })
             toast.success("created post",{id:'1'})
         },
         onError:()=>{

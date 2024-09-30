@@ -1,14 +1,16 @@
 import { FaComment, FaRetweet, FaHeart, FaBookmark, FaEllipsisH, FaUpload } from 'react-icons/fa';
 import { IoIosTrendingUp } from "react-icons/io";
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface TweetCardProps {
+  id:string | undefined,
   authorName: string;
   authorHandle: string;
   tweetTime: string;
   tweetContent: string;
   media?: string;
-  tweetTags?: string[];
+  tweetTags?: (string | null)[] | null | undefined;
   likesCount: number;
   commentCount: number;
   retweetCount: number;
@@ -17,6 +19,7 @@ interface TweetCardProps {
 }
 
 const FeedCard: React.FC<TweetCardProps> = ({
+  id,
   authorName,
   authorHandle,
   tweetTime,
@@ -32,6 +35,7 @@ const FeedCard: React.FC<TweetCardProps> = ({
   return (
     <div className="w-full bg-app-background text-app-text-primary border-app-border border-b-2 pb-2">
       <div className="grid grid-cols-[1fr_11fr]">
+        <Link href={`/profile/${id}`}>
         <div className='m-2'>
           <Image
             src={profileImageURL || "/images/profile_photo.webp"}
@@ -41,11 +45,16 @@ const FeedCard: React.FC<TweetCardProps> = ({
             className="w-full h-auto rounded-full object-cover"
           />
         </div>
+        </Link>
         <div>
           <div className='mt-2 flex justify-between'>
             <div className="flex items-center space-x-2">
+              <Link href={`/profile/${id}`}>
               <span className="text-app-text-primary font-bold">{authorName}</span>
+              </Link>
+              <Link href={`/profile/${id}`}>
               <span className="text-app-text-secondary">@{authorHandle}</span>
+              </Link>
               <span className="text-app-text-secondary">&middot; {tweetTime}</span>
             </div>
 
@@ -56,7 +65,7 @@ const FeedCard: React.FC<TweetCardProps> = ({
           <div className='text-app-text-primary mt-2 mr-3'>
             {tweetContent}
           </div>
-          {tweetTags.length > 0 && <div className="mt-1 text-app-hashtag">
+          {tweetTags &&tweetTags.length > 0 && <div className="mt-1 text-app-hashtag">
             {tweetTags.map((tag, index) => (
               <span key={index} className="mr-2">
                 #{tag}

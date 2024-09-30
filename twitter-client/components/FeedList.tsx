@@ -7,6 +7,7 @@ interface User {
     firstName: string;
     lastName?: string | null;
     profileImageURL?: string | null;
+    id:string
   }
   
   interface tweetInterface {
@@ -27,7 +28,7 @@ const FeedList: React.FC<TweetProps> = ({ tweets }) => {
             <PostContainer />
             {tweets && tweets.map((tweet) => (
                 <div key={tweet?.id}>
-                    <FeedCard authorName={tweet?.author?.firstName || "ananymous"} authorHandle={tweet?.author?.firstName || "ananymous"} tweetTime="15h" tweetContent={tweet?.content || ""} media={tweet?.imageURL || undefined} tweetTags={tweet?.tags} likesCount={100} commentCount={200} retweetCount={500} trendingCount={50} profileImageURL={tweet?.author?.profileImageURL || undefined}/>
+                    <FeedCard id={tweet?.author?.id} authorName={tweet?.author?.firstName || "ananymous"} authorHandle={tweet?.author?.firstName || "ananymous"} tweetTime="15h" tweetContent={tweet?.content || ""} media={tweet?.imageURL || undefined} tweetTags={tweet?.tags} likesCount={100} commentCount={200} retweetCount={500} trendingCount={50} profileImageURL={tweet?.author?.profileImageURL || undefined}/>
                 </div>
             ))}
         </div>

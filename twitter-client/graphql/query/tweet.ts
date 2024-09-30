@@ -10,6 +10,7 @@ export const getAllTweetsQuery=graphql(`#graphql
                     firstName
                     lastName
                     profileImageURL
+                    id
                 }
             }
         }

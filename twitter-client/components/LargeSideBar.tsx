@@ -3,6 +3,7 @@ import { FaHome, FaBell, FaEnvelope, FaBookmark, FaUser, FaSearch } from 'react-
 import Image from 'next/image';
 import { useCurrentUser } from "@/hooks/user";
 import { useState } from 'react';
+import Link from "next/link";
 interface MenuItem {
   name: string;
   icon: JSX.Element;
@@ -34,14 +35,14 @@ const LargeSideBar: React.FC = () => {
         <div className="flex flex-col space-y-8 p-4">
           <div className="pl-3"><FaXTwitter size={32} /></div>
           {menuItems.map((item) => (
-            <a
+            <Link
               key={item.name}
               href={item.href}
               className="bg-app-background flex items-center text-app-text-primary text-xl py-2 px-4 rounded-full hover:bg-app-border transition-all duration-300 mb-2"
             >
               <span className="mr-4">{item.icon}</span>
               {item.name}
-            </a>
+            </Link>
           ))}
           <button className="mt-8 bg-app-primary-btn hover:bg-app-btn-hover text-app-text-primary font-bold py-3 px-8 rounded-full w-full transition-all duration-300">
             Post

@@ -6,14 +6,22 @@ import { useCurrentUser } from '@/hooks/user'
 import { GoFileMedia } from 'react-icons/go';
 import { MdCancelPresentation } from "react-icons/md";
 import { useCreateTweet } from '@/hooks/tweet';
+import { graphqlClient } from '@/clients/api';
+import { getSignedURLForTweetQuery } from '@/graphql/query/tweet';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const PostContainer = () => {
     const { user } = useCurrentUser();
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [imageName, setImageName] = useState<string | null>(null);   // To store the image name
+    const [imageType, setImageType] = useState<string | null>(null);   // To store the image type
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [theContent,setContent]=useState<string>("");
-    const {mutate}=useCreateTweet();
+    const [theContent, setContent] = useState<string>("");
+    const [imageURL,setImageURL]=useState<string>("");
+    const { mutate } = useCreateTweet();
     const handleInput = (event: ChangeEvent<HTMLTextAreaElement>) => {
         const textarea = textareaRef.current;
 
@@ -24,20 +32,49 @@ const PostContainer = () => {
     };
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
+        
         if (file && file.type.startsWith('image/')) {
+            setImageName(file.name);          // Store the image name
+            setImageType(file.type);          // Store the image type
+            setImageFile(file);               // Store the actual file
+    
             const reader = new FileReader();
             reader.onloadend = () => {
-                setSelectedImage(reader.result as string);
+                setSelectedImage(reader.result as string);  // Store base64 string
             };
             reader.readAsDataURL(file);
         } else {
             setSelectedImage(null);
+            setImageName(null);
+            setImageType(null);
+            setImageFile(null);
         }
     };
-    const handlePost = () => {
+    const handlePost = async () => {
+        if (selectedImage  && imageType && imageName) {
+            const {getSignedURLForTweet} = await graphqlClient.request(getSignedURLForTweetQuery, {
+                imageName:imageName,
+                imageType:imageType
+            })
+            if(getSignedURLForTweet){
+                toast.loading("Uploading...",{id:'2'});
+                await axios.put(getSignedURLForTweet,selectedImage,{
+                    headers:{
+                        'Content-Type':imageType
+                    }
+                })
+                toast.success("Upload Completed",{id:'2'});
+                const url=new URL(getSignedURLForTweet);
+                const myFilePath=`${url.origin}${url.pathname}`
+                setImageURL(myFilePath);
+                console.log(myFilePath);
+            }
+        }
         mutate({
-            content:theContent,
+            content: theContent,
+            imageURL,
         })
+        
         setContent("");
         if (textareaRef.current) {
             textareaRef.current.value = '';
@@ -70,7 +107,7 @@ const PostContainer = () => {
                                     required
                                     onInput={handleInput}
                                     className='w-full bg-app-background focus:outline-none resize-none'
-                                    onChange={(e)=>setContent(e.target.value)}
+                                    onChange={(e) => setContent(e.target.value)}
                                     value={theContent}
                                 ></textarea>
                             </div>
@@ -96,7 +133,7 @@ const PostContainer = () => {
                                     className="hidden"
                                 />
                             </label>
-                            {selectedImage && <MdCancelPresentation size={24} onClick={()=>{setSelectedImage(null)}} className="text-app-icon-default hover:text-app-icon-hover transition-colors duration-300"/>}
+                            {selectedImage && <MdCancelPresentation size={24} onClick={() => { setSelectedImage(null) }} className="text-app-icon-default hover:text-app-icon-hover transition-colors duration-300" />}
                         </div>
                         <button
                             onClick={handlePost}

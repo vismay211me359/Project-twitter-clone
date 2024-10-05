@@ -16,6 +16,30 @@ const ProfilePage = () => {
   };
 
   const { user } = useCurrentUser();
+  const amIFollowing = useMemo(() => {
+    if (!props.userInfo) return false;
+    return (
+      (currentUser?.following?.findIndex(
+        (el) => el?.id === props.userInfo?.id
+      ) ?? -1) >= 0
+    );
+  }, [currentUser?.following, props.userInfo]);
+
+  const handleFollowUser = useCallback(async () => {
+    if (!props.userInfo?.id) return;
+
+    await graphqlClient.request(followUserMutation, { to: props.userInfo?.id });
+    await queryClient.invalidateQueries(["curent-user"]);
+  }, [props.userInfo?.id, queryClient]);
+
+  const handleUnfollowUser = useCallback(async () => {
+    if (!props.userInfo?.id) return;
+
+    await graphqlClient.request(unfollowUserMutation, {
+      to: props.userInfo?.id,
+    });
+    await queryClient.invalidateQueries(["curent-user"]);
+  }, [props.userInfo?.id, queryClient]);
 
   return (
     <div className='w-full min-h-screen h-auto border-x-2 border-app-border'>
@@ -58,15 +82,40 @@ const ProfilePage = () => {
             </button>
           </div>
         </div>
+        <div className="flex justify-between items-center">
+          <div className="flex gap-4 mt-2 text-sm text-gray-400">
+            <span>{user?.followers?.length} followers</span>
+            <span>{user?.following?.length} following</span>
+          </div>
+          {user?.id !== user?.id && (
+            <>
+              {amIFollowing ? (
+                <button
+                  onClick={handleUnfollowUser}
+                  className="bg-white text-black px-3 py-1 rounded-full text-sm"
+                >
+                  Unfollow
+                </button>
+              ) : (
+                <button
+                  onClick={handleFollowUser}
+                  className="bg-white text-black px-3 py-1 rounded-full text-sm"
+                >
+                  Follow
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </div>
       <div>
         <PostContainer />
         {user?.tweets ? <div><div className="w-full border-x-2 border-app-border">
-            {user.tweets.map((tweet) => (
-                <div key={tweet?.id}>
-                    <FeedCard id={tweet?.id} authorName={user.firstName} authorHandle={user.firstName || "ananymous"} tweetTime="15h" tweetContent={tweet?.content || ""} media={tweet?.imageURL || undefined} tweetTags={tweet?.tags} likesCount={100} commentCount={200} retweetCount={500} trendingCount={50} profileImageURL={user.profileImageURL || undefined}/>
-                </div>
-            ))}
+          {user.tweets.map((tweet) => (
+            <div key={tweet?.id}>
+              <FeedCard id={tweet?.id} authorName={user.firstName} authorHandle={user.firstName || "ananymous"} tweetTime="15h" tweetContent={tweet?.content || ""} media={tweet?.imageURL || undefined} tweetTags={tweet?.tags} likesCount={100} commentCount={200} retweetCount={500} trendingCount={50} profileImageURL={user.profileImageURL || undefined} />
+            </div>
+          ))}
         </div></div> : (<div>
           <div className="flex items-center justify-center bg-app-background m-5">
             <div className="bg-gray-800 text-white p-8 rounded-lg shadow-lg text-center">

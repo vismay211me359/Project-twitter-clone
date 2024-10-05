@@ -52,6 +52,10 @@ const page = ({ params }: { params: { id: string } }) => {
             </button>
           </div>
         </div>
+        <div className='flex gap-4 mt-2 text-sm text-app-text-secondary'>
+          <span>{user?.followers.length} followers</span>
+          <span>{user?.following.length} following</span>
+        </div>
       </div>
       <div>
         {user?.tweets && <div><div className="w-full border-x-2 border-app-border">

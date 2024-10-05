@@ -45,7 +45,7 @@ export default function RootLayout({ feed, suggestions }: { feed: React.ReactNod
   return (
     <html lang="en">
       <QueryClientProvider client={queryClient}>
-      <GoogleOAuthProvider clientId={"272366902165-qhd0k9fn54hjigf5ga0bjlpiukh74t4f.apps.googleusercontent.com"}>
+      <GoogleOAuthProvider clientId={clientId}>
         <body>
           <main>
             <Toaster/>
